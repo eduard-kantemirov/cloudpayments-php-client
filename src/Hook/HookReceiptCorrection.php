@@ -42,4 +42,9 @@ class HookReceiptCorrection extends BaseHook
     public string $sessionCheckNumber;
     public string $sessionNumber;
 
+    /** @var bool|null Признак интернет оплаты, тег ОФД 1125 */
+    public ?bool $isInternetPayment = null;
+
+    /** @var int|null Часовая зона места расчета, тег ОФД 1011 */
+    public ?int $timeZoneCode = null;
 }

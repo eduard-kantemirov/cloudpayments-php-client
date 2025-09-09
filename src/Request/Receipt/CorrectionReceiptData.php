@@ -88,4 +88,22 @@ class CorrectionReceiptData extends BaseRequest
 
     /** @var string|null Дополнительный реквизит чека (тег 1192) */
     public ?string $additionalReceiptRequisite;
+
+    /** @var bool|null Признак интернет оплаты, тег ОФД 1125 */
+    public ?bool $isInternetPayment = null;
+
+    /** @var int|null Часовая зона места расчета, тег ОФД 1011. Принимает значение от 1 до 11 */
+    public ?int $timeZoneCode = null;
+
+    /**
+     * @param int|null $timeZoneCode Значение от 1 до 11
+     * @throws \InvalidArgumentException
+     */
+    public function setTimeZoneCode(?int $timeZoneCode): void
+    {
+        if ($timeZoneCode !== null && ($timeZoneCode < 1 || $timeZoneCode > 11)) {
+            throw new \InvalidArgumentException('TimeZoneCode must be between 1 and 11');
+        }
+        $this->timeZoneCode = $timeZoneCode;
+    }
 }

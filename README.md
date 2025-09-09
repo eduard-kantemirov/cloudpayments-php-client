@@ -140,6 +140,43 @@ $apiClient->createPaymentByCard2Step(\*...*\);
 ...
 ```
 
+### Работа с новыми полями чеков
+
+#### Создание чека с интернет-платежом и безналичными оплатами
+```php
+use Flowwow\Cloudpayments\Request\Receipt\CustomerReceipt;
+use Flowwow\Cloudpayments\Request\Receipt\ReceiptItem;
+use Flowwow\Cloudpayments\Request\Receipt\ReceiptAmounts;
+use Flowwow\Cloudpayments\Request\Receipt\NonCashPayment;
+
+// Создание позиций чека
+$items = [ new ReceiptItem('Товар 1', '100', '100', '20') ];
+
+$amounts = new ReceiptAmounts();
+$amounts->electronic = '100';
+
+// Создание чека
+$receipt = new CustomerReceipt($items, '0', $amounts);
+
+// Установка новых полей
+$receipt->isInternetPayment = true;
+$receipt->setTimeZoneCode(2); // Москва
+$receipt->nonCashPayments = [
+    new NonCashPayment('50', 1, 'PAY123456', 'Карта'),
+    new NonCashPayment('50', 2, 'PAY789012', 'Электронные деньги'),
+];
+```
+
+#### Создание чека коррекции с новыми полями
+```php
+use Flowwow\Cloudpayments\Request\Receipt\CorrectionReceiptData;
+
+$correctionData = new CorrectionReceiptData();
+// ... другие поля ...
+$correctionData->isInternetPayment = true;
+$correctionData->setTimeZoneCode(4); // Екатеринбург
+```
+
 ## License
 
 MIT

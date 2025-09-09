@@ -33,6 +33,14 @@ class CustomerReceipt extends BaseRequest
     /** @var ReceiptIndustryRequisiteCollection[]|null */
     public ?array                                    $industryRequisiteCollection = null;
 
+    /** @var bool|null Признак интернет оплаты, тег ОФД 1125 */
+    public ?bool                                     $isInternetPayment = null;
+
+    /** @var int|null Часовая зона места расчета, тег ОФД 1011. Принимает значение от 1 до 11 */
+    public ?int                                      $timeZoneCode = null;
+
+    /** @var NonCashPayment[]|null Сведения об безналичной оплате, тег ОФД 1234 */
+    public ?array                                    $nonCashPayments = null;
 
     /**
      * @param ReceiptItem[]  $items
@@ -44,5 +52,17 @@ class CustomerReceipt extends BaseRequest
         $this->items          = $items;
         $this->taxationSystem = $taxationSystem;
         $this->amounts        = $amounts;
+    }
+
+    /**
+     * @param int|null $timeZoneCode Значение от 1 до 11
+     * @throws \InvalidArgumentException
+     */
+    public function setTimeZoneCode(?int $timeZoneCode): void
+    {
+        if ($timeZoneCode !== null && ($timeZoneCode < 1 || $timeZoneCode > 11)) {
+            throw new \InvalidArgumentException('TimeZoneCode must be between 1 and 11');
+        }
+        $this->timeZoneCode = $timeZoneCode;
     }
 }
